@@ -40,10 +40,10 @@ export function nameFilter(state = "", action) {
   }
 }
 
-export function tagsFilter(state = [], action) {
+export function typesFilter(state = [], action) {
   switch (action.type) {
-    case "UPDATE_TAGS_FILTER":
-      const tag = action.data;
+    case "SET_TYPES":
+      const tag = action.payload;
       let tagsFilter = [...state];
       if (tagsFilter.indexOf(tag) === -1) {
         tagsFilter.push(tag);
@@ -51,8 +51,8 @@ export function tagsFilter(state = [], action) {
         tagsFilter.splice(tagsFilter.indexOf(tag), 1);
       }
       return tagsFilter;
-    case "CLEAN_TAGS_FILTER":
-      return [...state].filter(tag => action.data.indexOf(tag) !== -1);
+    case "CLEAN_TYPES":
+      return [...state].filter(tag => action.payload.indexOf(tag) !== -1);
     default:
       return state;
   }

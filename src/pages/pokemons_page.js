@@ -8,9 +8,67 @@ import {
   fetchPokemons,
   LIMIT_ARR,
   setLimit,
-  setSearchName
+  setSearchName,
+  setTypesFilter,
+  cleanTypesFilter
 } from "../actions/pokemon_action";
+
+const types = [
+  { key: "English", text: "English", value: "English" },
+  { key: "French", text: "French", value: "French" },
+  { key: "Spanish", text: "Spanish", value: "Spanish" },
+  { key: "German", text: "German", value: "German" },
+  { key: "Chinese", text: "Chinese", value: "Chinese" }
+];
+
 class Pokemons extends Component {
+  state = { types };
+  onTypeAddition = (e, { value }) => {
+    this.setState({
+      types: [{ text: value, value }, ...this.state.types]
+    });
+  };
+
+  handleChange = (e, { value }) => this.setState({ currentValues: value });
+
+  // onTagClick(tag) {
+  //   this.props.dispatch(setTypesFilter(tag));
+  // }
+
+  componentWillReceiveProps(nextProps) {
+    // const typesArr = nextProps.pokemonsList.reduce((prev, next) => {
+    //   next.types.forEach(({ type }) => {
+    //     prev.push(type.name);
+    //   });
+    //   return prev.filter((item, index, arr) => arr.indexOf(item) === index);
+    // }, []);
+
+    const types = nextProps.pokemonsList.reduce(function(result, item, index) {
+      item.types.forEach(({ type }) => {
+        if (result.findIndex(x => x.value == type.name) === -1)
+          result.push({
+            key: index,
+            value: type.name,
+            text: type.name
+          });
+      });
+      return result;
+    }, []);
+
+    console.log(types);
+    this.setState({
+      types
+    });
+  }
+
+  // componentDidUpdate() {
+  //   const tagsDifference = this.props.tagsFilter.filter(
+  //     tag => this.state.tags.indexOf(tag) === -1
+  //   );
+  //   if (tagsDifference.length) {
+  //     this.props.dispatch(cleanTypesFilter(this.state.tags));
+  //   }
+  // }
   searchByName(arr, name) {
     return name.trim()
       ? arr.filter(item => {
@@ -37,7 +95,7 @@ class Pokemons extends Component {
       result.push({ key: index, value: item, text: item });
       return result;
     }, []);
-
+    const { currentValues } = this.state;
     return (
       <Grid>
         <Grid.Row>
@@ -45,14 +103,19 @@ class Pokemons extends Component {
             <Input
               icon="search"
               onChange={this.onSearch}
-              placeholder="search.."
+              placeholder="Search.."
             />
 
-            <Button.Group basic>
-              <Button>One</Button>
-              <Button>Two</Button>
-              <Button>Three</Button>
-            </Button.Group>
+            <Dropdown
+              options={this.state.types}
+              placeholder="Choose Types"
+              selection
+              multiple
+              allowAdditions
+              value={currentValues}
+              onAddItem={this.onTypeAddition}
+              onChange={this.handleChange}
+            />
             <Dropdown onChange={this.onChangeLimit} options={limit_ops} />
           </Grid.Column>
         </Grid.Row>
@@ -100,9 +163,11 @@ class Pokemons extends Component {
 }
 Pokemons.propTypes = {
   pokemonsList: PropTypes.array.isRequired,
-  valNameFilter: PropTypes.string.isRequired
+  valNameFilter: PropTypes.string.isRequired,
+  tagsFilter: PropTypes.array.isRequired
 };
 export default connect(state => ({
   pokemonsList: state.pokemonsList,
-  valNameFilter: state.nameFilter
+  valNameFilter: state.nameFilter,
+  tagsFilter: state.tagsFilter
 }))(Pokemons);

@@ -11,11 +11,11 @@ export function setSearchName(name) {
   return { type: "SET_SEARCH_NAME", payload: name };
 }
 
-export function setTagsFilter(data) {
-  return { type: "UPDATE_TAGS_FILTER", payload: data };
+export function setTypesFilter(data) {
+  return { type: "SET_TYPES", payload: data };
 }
-export function cleanTagsFilter(data) {
-  return { type: "CLEAN_TAGS_FILTER", payload: data };
+export function cleanTypesFilter(data) {
+  return { type: "CLEAN_TYPES", payload: data };
 }
 
 export function error(text) {
