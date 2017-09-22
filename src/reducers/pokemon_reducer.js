@@ -1,5 +1,28 @@
-import { LIMIT_ARR } from "../actions/pokemon_action";
+export function onPrev(state = [], action) {
+  switch (action.type) {
+    case "PREV":
+      return action.payload - 1;
+    default:
+      return state;
+  }
+}
+export function onNext(state = [], action) {
+  switch (action.type) {
+    case "NEXT":
+      return action.payload + 1;
+    default:
+      return state;
+  }
+}
 
+export function pokemonsCount(state = [], action) {
+  switch (action.type) {
+    case "POKEMONS_COUNT":
+      return action.payload;
+    default:
+      return state;
+  }
+}
 export function pokemonsList(state = [], action) {
   switch (action.type) {
     case "POKEMON_FULLFIELD":
@@ -19,18 +42,30 @@ export function pokemonInfo(state = {}, action) {
   }
 }
 
-export function loaders(state = { pokemonsLoading: false }, action) {
+export function loading(state = false, action) {
   switch (action.type) {
-    case "LOAD_POKEMONS":
-      return {
-        ...state,
-        pokemonsLoading: action.isLoading
-      };
+    case "LOADING":
+      return action.payload;
     default:
       return state;
   }
 }
-
+export function Limit(state = "", action) {
+  switch (action.type) {
+    case "SET_LIMIT":
+      return action.payload;
+    default:
+      return state;
+  }
+}
+export function Offset(state = "", action) {
+  switch (action.type) {
+    case "SET_OFFSET":
+      return action.payload;
+    default:
+      return state;
+  }
+}
 export function nameFilter(state = "", action) {
   switch (action.type) {
     case "SET_SEARCH_NAME":
@@ -43,16 +78,7 @@ export function nameFilter(state = "", action) {
 export function typesFilter(state = [], action) {
   switch (action.type) {
     case "SET_TYPES":
-      const tag = action.payload;
-      let tagsFilter = [...state];
-      if (tagsFilter.indexOf(tag) === -1) {
-        tagsFilter.push(tag);
-      } else {
-        tagsFilter.splice(tagsFilter.indexOf(tag), 1);
-      }
-      return tagsFilter;
-    case "CLEAN_TYPES":
-      return [...state].filter(tag => action.payload.indexOf(tag) !== -1);
+      return action.payload;
     default:
       return state;
   }

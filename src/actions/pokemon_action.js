@@ -1,16 +1,28 @@
 import axios from "axios";
 
-export const LIMIT_ARR = [3, 5, 7, 10, 50, 100];
+export const LIMIT_ARR = [5, 7, 10, 50, 100];
+export const DEFAULT_LIMIT = 5;
+export const DEFAULT_OFFSET = 0;
 
 const URL = "http://pokeapi.co/api/v2/pokemon/";
+function imgURL(id) {
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+}
+export function prev(v) {
+  return { type: "PREV", v };
+}
+export function next(v) {
+  return { type: "NEXT", v };
+}
 export function setLimit(limit) {
   return { type: "SET_LIMIT", payload: limit };
 }
-
+export function setOffset(offset) {
+  return { type: "SET_OFFSET", payload: offset };
+}
 export function setSearchName(name) {
   return { type: "SET_SEARCH_NAME", payload: name };
 }
-
 export function setTypesFilter(data) {
   return { type: "SET_TYPES", payload: data };
 }
@@ -33,12 +45,16 @@ export function searchPokemons(name) {
 export function pokemonsSuccess(data) {
   return { type: "POKEMONS_SUCCESS", payload: data };
 }
+export function pokemonsCount(data) {
+  return { type: "POKEMONS_COUNT", payload: data };
+}
 export function pokemonSuccess(data) {
   return {
     type: "POKEMON_FULLFIELD",
     payload: data.map(pokemon => ({
       id: pokemon.data.id,
       name: pokemon.data.name,
+      img_src: imgURL(pokemon.data.id),
       types: pokemon.data.types,
       abilities: pokemon.data.abilities,
       base_experience: pokemon.data.base_experience,
@@ -59,7 +75,7 @@ export function fetchPokemon(poks) {
       .then(
         axios.spread((...data) => {
           dispatch(loading(false));
-
+          console.log(data);
           return data;
         })
       )
@@ -68,7 +84,7 @@ export function fetchPokemon(poks) {
   };
 }
 
-export function fetchPokemons(limit = 3, offset = 0) {
+export function fetchPokemons(limit = DEFAULT_LIMIT, offset = DEFAULT_OFFSET) {
   return dispatch => {
     const params = {
       limit,
@@ -79,9 +95,8 @@ export function fetchPokemons(limit = 3, offset = 0) {
       .get(URL, { params })
       .then(response => {
         dispatch(loading(false));
-
         dispatch(pokemonsSuccess(response.data));
-
+        dispatch(pokemonsCount(response.data.count));
         dispatch(fetchPokemon(response.data.results));
       })
       .catch(() => dispatch(error("error load pokemons")));
