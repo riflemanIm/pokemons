@@ -38,7 +38,6 @@ class Pokemons extends Component {
 
   onChangeTypes = (e, { value }) => {
     this.setState({ currTypeVals: value });
-    console.log(value);
     this.props.dispatch(setTypesFilter(value));
   };
 
@@ -68,7 +67,6 @@ class Pokemons extends Component {
 
   searchByTypes(pokemons, typesNames) {
     let pokIds = [];
-    console.log("--- typesNames---", typesNames);
     pokemons.reduce((result, item) => {
       item.types.forEach(({ type }) => {
         if (
@@ -116,7 +114,7 @@ class Pokemons extends Component {
       pokemonsList = this.searchByTypes(pokemonsList, valsTypesFilter);
 
     const limit_ops = LIMIT_ARR.reduce(function(result, item, index) {
-      result.push({ key: index, value: item, text: "Page: " + item });
+      result.push({ key: index, value: item, text: "Rows: " + item });
       return result;
     }, []);
 

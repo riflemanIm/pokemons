@@ -75,7 +75,6 @@ export function fetchPokemon(poks) {
       .then(
         axios.spread((...data) => {
           dispatch(loading(false));
-          console.log(data);
           return data;
         })
       )
@@ -100,16 +99,5 @@ export function fetchPokemons(limit = DEFAULT_LIMIT, offset = DEFAULT_OFFSET) {
         dispatch(fetchPokemon(response.data.results));
       })
       .catch(() => dispatch(error("error load pokemons")));
-  };
-}
-export function fetchPokemonAbout(id) {
-  return dispatch => {
-    axios
-      .get(`URL${id}`)
-      .then(response => {
-        console.log(response);
-        dispatch(pokemonAboutSuccess(response.data));
-      })
-      .catch(() => dispatch(error("error load about pokemon ")));
   };
 }
