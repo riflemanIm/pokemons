@@ -4,7 +4,7 @@ export const LIMIT_ARR = [5, 7, 10, 50, 100];
 export const DEFAULT_LIMIT = 5;
 export const DEFAULT_OFFSET = 0;
 
-const URL = "http://pokeapi.co/api/v2/pokemon/";
+const URL = "https://pokeapi.co/api/v2/pokemon/";
 function imgURL(id) {
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
 }

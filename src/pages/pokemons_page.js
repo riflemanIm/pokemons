@@ -110,14 +110,13 @@ class Pokemons extends Component {
       valsTypesFilter
     } = this.props;
 
-    console.log(this.props.loading);
     if (valNameFilter.trim())
       pokemonsList = this.searchByName(pokemonsList, valNameFilter);
     if (valsTypesFilter.length)
       pokemonsList = this.searchByTypes(pokemonsList, valsTypesFilter);
 
     const limit_ops = LIMIT_ARR.reduce(function(result, item, index) {
-      result.push({ key: index, value: item, text: item });
+      result.push({ key: index, value: item, text: "Page: " + item });
       return result;
     }, []);
 
@@ -129,21 +128,20 @@ class Pokemons extends Component {
               icon="search"
               onChange={this.onSearch}
               placeholder="Search.."
-            />
+            />&nbsp; &nbsp;
             <Dropdown
               options={this.state.types}
               placeholder="Choose Types"
               multiple
-              selection
               value={valsTypesFilter}
               onAddItem={this.onTypeAddition}
               onChange={this.onChangeTypes}
-            />
+            />&nbsp; &nbsp;
             <Dropdown
-              onChange={this.onChangeLimit}
-              selection
-              value={limit}
               options={limit_ops}
+              onChange={this.onChangeLimit}
+              value={limit}
+              placeholder="Choose Page"
             />
           </Grid.Column>
         </Grid.Row>
@@ -151,7 +149,7 @@ class Pokemons extends Component {
           <Grid.Column textAlign="right">
             Total Pokemons: {pokemonsCount} &nbsp; &nbsp; &nbsp; Pages:{" "}
             {Math.floor(pokemonsCount / limit)} &nbsp; &nbsp; &nbsp; Page:{" "}
-            {offset >= limit ? Math.floor(offset / limit) : 1} &nbsp; &nbsp;
+            {offset >= limit ? Math.floor(offset / limit + 1) : 1} &nbsp; &nbsp;
             &nbsp;
             <Button disabled={!offset} onClick={this.onPrev}>
               prev
@@ -165,9 +163,9 @@ class Pokemons extends Component {
         <Grid.Row>
           <Grid.Column>
             <Grid columns="equal">
-              {!loading ? (
-                pokemonsList.map(pokemon => (
-                  <Grid.Row>
+              {!loading && pokemonsList.length ? (
+                pokemonsList.map((pokemon, i) => (
+                  <Grid.Row key={i}>
                     <Grid.Column textAlign="center">
                       <Segment>
                         <Grid>
@@ -182,8 +180,8 @@ class Pokemons extends Component {
                                   <Grid.Column width={2}>types</Grid.Column>
                                   <Grid.Column width={2}>
                                     {pokemon.types &&
-                                      pokemon.types.map(item => (
-                                        <span>{item.type.name} </span>
+                                      pokemon.types.map((item, i) => (
+                                        <span key={i}>{item.type.name} </span>
                                       ))}
                                   </Grid.Column>
                                 </Grid.Row>
@@ -192,8 +190,10 @@ class Pokemons extends Component {
                                   <Grid.Column width={2}>abilities</Grid.Column>
                                   <Grid.Column width={2}>
                                     {pokemon.abilities &&
-                                      pokemon.abilities.map(item => (
-                                        <span>{item.ability.name} </span>
+                                      pokemon.abilities.map((item, i) => (
+                                        <span key={i}>
+                                          {item.ability.name}{" "}
+                                        </span>
                                       ))}
                                   </Grid.Column>
                                 </Grid.Row>
