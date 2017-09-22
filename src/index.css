@@ -1,6 +1,6 @@
-#root > div > div.ui.grid > div:nth-child(2) > div {
-  overflow-y: auto;
-  white-space: nowrap;
-
-  height: 500px;
+.pokemonItem {
+  display: inline-block;
+  width: 48%;
+  padding-left: 2%;
+  padding-bottom: 2%;
 }

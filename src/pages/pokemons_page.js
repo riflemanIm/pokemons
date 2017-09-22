@@ -161,71 +161,78 @@ class Pokemons extends Component {
         <Grid.Row>
           <Grid.Column>
             <Grid columns="equal">
-              {!loading && pokemonsList.length ? (
-                pokemonsList.map((pokemon, i) => (
-                  <Grid.Row key={i}>
-                    <Grid.Column textAlign="center">
-                      <Segment>
-                        <Grid>
-                          <Grid.Row>
-                            <Grid.Column width={3}>
-                              <Image src={pokemon.img_src} alt={pokemon.name} />
-                              {pokemon.name}
-                            </Grid.Column>
-                            <Grid.Column width={13}>
-                              <Grid>
-                                <Grid.Row>
-                                  <Grid.Column width={2}>types</Grid.Column>
-                                  <Grid.Column width={2}>
-                                    {pokemon.types &&
-                                      pokemon.types.map((item, i) => (
-                                        <span key={i}>{item.type.name} </span>
-                                      ))}
-                                  </Grid.Column>
-                                </Grid.Row>
+              <Grid.Row>
+                <Grid.Column>
+                  {!loading && pokemonsList.length ? (
+                    pokemonsList.map((pokemon, i) => (
+                      <div className="pokemonItem">
+                        <Segment key={i}>
+                          <Grid>
+                            <Grid.Row>
+                              <Grid.Column width={5}>
+                                <Image
+                                  src={pokemon.img_src}
+                                  alt={pokemon.name}
+                                />
+                                {pokemon.name}
+                              </Grid.Column>
+                              <Grid.Column width={11}>
+                                <Grid>
+                                  <Grid.Row>
+                                    <Grid.Column width={5}>types</Grid.Column>
+                                    <Grid.Column width={11}>
+                                      {pokemon.types &&
+                                        pokemon.types.map((item, i) => (
+                                          <span key={i}>{item.type.name} </span>
+                                        ))}
+                                    </Grid.Column>
+                                  </Grid.Row>
 
-                                <Grid.Row>
-                                  <Grid.Column width={2}>abilities</Grid.Column>
-                                  <Grid.Column width={2}>
-                                    {pokemon.abilities &&
-                                      pokemon.abilities.map((item, i) => (
-                                        <span key={i}>
-                                          {item.ability.name}{" "}
-                                        </span>
-                                      ))}
-                                  </Grid.Column>
-                                </Grid.Row>
-                                <Grid.Row>
-                                  <Grid.Column width={2}>weight</Grid.Column>
-                                  <Grid.Column width={2}>
-                                    {pokemon.weight}
-                                  </Grid.Column>
-                                </Grid.Row>
-                                <Grid.Row>
-                                  <Grid.Column width={2}>height</Grid.Column>
-                                  <Grid.Column width={2}>
-                                    {pokemon.height}
-                                  </Grid.Column>
-                                </Grid.Row>
-                                <Grid.Row>
-                                  <Grid.Column width={2}>
-                                    experience
-                                  </Grid.Column>
-                                  <Grid.Column width={2}>
-                                    {pokemon.base_experience}
-                                  </Grid.Column>
-                                </Grid.Row>
-                              </Grid>
-                            </Grid.Column>
-                          </Grid.Row>
-                        </Grid>
-                      </Segment>
-                    </Grid.Column>
-                  </Grid.Row>
-                ))
-              ) : (
-                <Loader active inline="centered" />
-              )}
+                                  <Grid.Row>
+                                    <Grid.Column width={5}>
+                                      abilities
+                                    </Grid.Column>
+                                    <Grid.Column width={11}>
+                                      {pokemon.abilities &&
+                                        pokemon.abilities.map((item, i) => (
+                                          <span key={i}>
+                                            {item.ability.name}{" "}
+                                          </span>
+                                        ))}
+                                    </Grid.Column>
+                                  </Grid.Row>
+                                  <Grid.Row>
+                                    <Grid.Column width={5}>weight</Grid.Column>
+                                    <Grid.Column width={11}>
+                                      {pokemon.weight}
+                                    </Grid.Column>
+                                  </Grid.Row>
+                                  <Grid.Row>
+                                    <Grid.Column width={5}>height</Grid.Column>
+                                    <Grid.Column width={11}>
+                                      {pokemon.height}
+                                    </Grid.Column>
+                                  </Grid.Row>
+                                  <Grid.Row>
+                                    <Grid.Column width={5}>
+                                      experience
+                                    </Grid.Column>
+                                    <Grid.Column width={11}>
+                                      {pokemon.base_experience}
+                                    </Grid.Column>
+                                  </Grid.Row>
+                                </Grid>
+                              </Grid.Column>
+                            </Grid.Row>
+                          </Grid>
+                        </Segment>
+                      </div>
+                    ))
+                  ) : (
+                    <Loader active inline="centered" />
+                  )}
+                </Grid.Column>
+              </Grid.Row>
             </Grid>
           </Grid.Column>
         </Grid.Row>
