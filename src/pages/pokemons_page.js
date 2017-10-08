@@ -67,7 +67,7 @@ class Pokemons extends Component {
 
   searchByTypes(pokemons, typesNames) {
     let pokIds = [];
-    pokemons.reduce((result, item) => {
+    pokemons.forEach(item => {
       item.types.forEach(({ type }) => {
         if (
           typesNames.indexOf(type.name) !== -1 &&
@@ -76,8 +76,7 @@ class Pokemons extends Component {
           pokIds.push(item.id);
         }
       });
-      return result;
-    }, []);
+    });
     return pokemons.filter(item => pokIds.indexOf(item.id) !== -1);
   }
   onChangeLimit = (e, { value }) => {
