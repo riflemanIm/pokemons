@@ -5,12 +5,14 @@ import {
   Grid,
   Segment,
   Button,
-  Input,
   Dropdown,
   Loader,
   Image
 } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+
+import Search from "../components/Search.js";
+import Types from "../components/Types.js";
 
 import {
   fetchPokemons,
@@ -18,45 +20,14 @@ import {
   DEFAULT_OFFSET,
   LIMIT_ARR,
   setLimit,
-  setOffset,
-  setSearchName,
-  setTypesFilter
+  setOffset
 } from "../actions/pokemon_action";
 
 class Pokemons extends Component {
-  state = {};
   componentWillMount() {
     this.props.dispatch(setLimit(DEFAULT_LIMIT));
     this.props.dispatch(setOffset(DEFAULT_OFFSET));
     this.props.dispatch(fetchPokemons());
-  }
-  onTypeAddition = (e, { value }) => {
-    this.setState({
-      types: [{ text: value, value }, ...this.state.types]
-    });
-  };
-
-  onChangeTypes = (e, { value }) => {
-    this.setState({ currTypeVals: value });
-    this.props.dispatch(setTypesFilter(value));
-  };
-
-  componentWillReceiveProps(p) {
-    const types = p.pokemonsList.reduce((result, item) => {
-      item.types.forEach(({ type }) => {
-        if (result.findIndex(x => x.value === type.name) === -1)
-          result.push({
-            key: type.name,
-            value: type.name,
-            text: type.name
-          });
-      });
-      return result;
-    }, []);
-
-    this.setState({
-      types
-    });
   }
 
   searchByName(arr, name) {
@@ -83,14 +54,13 @@ class Pokemons extends Component {
     this.props.dispatch(setLimit(value));
     this.props.dispatch(fetchPokemons(value));
   };
-  onSearch = e => {
-    this.props.dispatch(setSearchName(e.target.value));
-  };
+
   onNext = () => {
     const offset = this.props.offset + this.props.limit;
     this.props.dispatch(setOffset(offset));
     this.props.dispatch(fetchPokemons(this.props.limit, offset));
   };
+
   onPrev = () => {
     const offset = this.props.offset - this.props.limit;
     this.props.dispatch(setOffset(offset));
@@ -121,25 +91,8 @@ class Pokemons extends Component {
       <Grid>
         <Grid.Row>
           <Grid.Column>
-            <Input
-              icon="search"
-              onChange={this.onSearch}
-              placeholder="Search.."
-            />&nbsp; &nbsp;
-            <Dropdown
-              options={this.state.types}
-              placeholder="Choose Types"
-              multiple
-              value={valsTypesFilter}
-              onAddItem={this.onTypeAddition}
-              onChange={this.onChangeTypes}
-            />&nbsp; &nbsp;
-            <Dropdown
-              options={limit_ops}
-              onChange={this.onChangeLimit}
-              value={limit}
-              placeholder="Choose Page"
-            />
+            <Search />&nbsp; &nbsp;
+            <Types />&nbsp; &nbsp;
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
@@ -155,6 +108,13 @@ class Pokemons extends Component {
             <Button disabled={pokemonsCount < offset} onClick={this.onNext}>
               next
             </Button>
+            &nbsp; &nbsp;
+            <Dropdown
+              options={limit_ops}
+              onChange={this.onChangeLimit}
+              value={limit}
+              placeholder="Choose Page"
+            />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
